@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #343a40;
+            margin: 0;
+            padding-top: 56px; /* Height of the navbar */
+        }
+        .sidebar {
+            background-color: rgba(0, 123, 255, 0.9);
+            padding: 15px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            border-right: 2px solid white;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .sidebar .navbar-brand {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            flex-direction: column; /* Arrange children in a column */
+        }
+        .sidebar .navbar-brand .welcome {
+            color: #fff;
+        }
+        .sidebar .navbar-brand .name {
+            color: orange;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .sidebar .nav-link {
+            color: white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .sidebar .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: white;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
+        .sidebar .nav-link:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+            color: #fff;
+        }
+        .sidebar .btn-danger {
+            width: 100%;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            min-height: calc(100vh - 56px); /* Ensure the form container is visible */
+            flex-direction: column; /* Arrange children in a column */
+        }
+        .profile-heading {
+            font-size: 24px;
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Apply specified font family */
+        }
+        .form-container h2 {
+            margin-bottom: 20px; /* Add space between the heading and form */
+            font-size: 24px;
+            font-weight: 600;
+            color: #007bff;
+            text-align: center;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .form-control {
+            font-size: 14px;
+        }
+        .btn-primary {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px; /* Adjust font size as needed */
+            margin-top: 5px;
+        }
+        .badge {
+            background-color: #ffc107;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 767.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 2px solid white;
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 50px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .sidebar {
+                width: 200px;
+                position: fixed;
+            }
+            .content {
+                margin-left: 220px;
+                padding-top: 50px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .content {
+                margin-left: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar collapse d-lg-block" id="sidebarMenu">
+        <div>
+            <a class="navbar-brand" href="#">
+                <span class="welcome">Welcome,</span>
+                <span class="name">{% if user.is_authenticated %}
+                {{ user.first_name }} {{ user.last_name }}
+                {% endif %}</span>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerhome' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workernotifications' %}">Notifications
+                        <span class="badge">{{ pending_requests_count }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerpassword' %}">Password Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerprofile' %}">Profile Updation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerreviews' %}">Worker Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workeraccept' %}">Accept and Reject</a>
+                </li>
+            </ul>
+        </div>
+        <a class="btn btn-danger" href="{% url 'logout1' %}">Logout</a>
+    </div>
+
+    <div class="content">
+        <div class="form-container">
+            <h2>Profile Updation</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form id="profile-form" method="post" enctype="multipart/form-data" action="{% url 'workerprofile1' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                    <div id="first_name-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                    <div id="last_name-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    <div id="email-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" id="age" name="age"  value="{{ usermember.age }}" required>
+                    <div id="age-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="number">Contact Number</label>
+                    <input type="text" class="form-control" id="number" name="number" value="{{ usermember.number }}" required>
+                    <div id="number-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience</label>
+                    <input type="text" class="form-control" id="experience" name="experience"value="{{ usermember.experience }}" required>
+                    <div id="experience-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <input type="text" class="form-control" id="department" name="department" value="{{ usermember.department }}" required>
+                    <div id="department-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="image">Profile Image</label>
+                    <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+                    {% if usermember.image %}
+                        <img src="{{ usermember.image.url }}" alt="Profile Image" style="max-width: 200px; margin-top: 10px;">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="supporting_documents">Supporting Documents</label>
+                    <input type="file" class="form-control-file" id="supporting_documents" name="supporting_documents">
+                    {% if usermember.supporting_documents %}
+                        <a href="{{ usermember.supporting_documents.url }}">Download Supporting Documents</a>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('profile-form').addEventListener('submit', function(event) {
+            var isValid = true;
+    
+            // Validate First Name
+            var firstNameField = document.getElementById('first_name');
+            var firstNameError = document.getElementById('first_name-error');
+            var firstNameValue = firstNameField.value.trim();
+            if (!/^[a-zA-Z]{3,}$/.test(firstNameValue)) {
+                firstNameError.textContent = "Please enter alphabets only and minimum 3 characters.";
+                isValid = false;
+            } else {
+                firstNameError.textContent = "";
+            }
+    
+            // Validate Last Name
+            var lastNameField = document.getElementById('last_name');
+            var lastNameError = document.getElementById('last_name-error');
+            var lastNameValue = lastNameField.value.trim();
+            if (!/^[a-zA-Z]{3,}$/.test(lastNameValue)) {
+                lastNameError.textContent = "Please enter alphabets only and minimum 3 characters.";
+                isValid = false;
+            } else {
+                lastNameError.textContent = "";
+            }
+    
+            // Validate Email
+            var emailField = document.getElementById('email');
+            var emailError = document.getElementById('email-error');
+            var emailValue = emailField.value.trim();
+            if (!/^[a-zA-Z0-9.@]+$/.test(emailValue)) {
+                emailError.textContent = "Please enter alphabets and digits only.";
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailValue) && !/^[a-zA-Z0-9._%+-]+@email\.com$/.test(emailValue)) {
+                emailError.textContent = "Please enter a valid email address with @, ., gmail.com or email.com.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+    
+            // Validate Age
+            var ageField = document.getElementById('age');
+            var ageError = document.getElementById('age-error');
+            var ageValue = ageField.value.trim();
+            if (!/^\d+$/.test(ageValue)) {
+                ageError.textContent = "Please enter digits only.";
+                isValid = false;
+            } else if (ageValue < 18 || ageValue > 60) {
+                ageError.textContent = "Please enter an age between 18 and 60.";
+                isValid = false;
+            } else {
+                ageError.textContent = "";
+            }
+    
+            // Validate Contact Number
+            var numberField = document.getElementById('number');
+            var numberError = document.getElementById('number-error');
+            var numberValue = numberField.value.trim();
+            if (!/^\d{1,10}$/.test(numberValue)) {
+                numberError.textContent = "Please enter digits only and up to 10 digits.";
+                isValid = false;
+            } else {
+                numberError.textContent = "";
+            }
+    
+            // Validate Experience
+            var experienceField = document.getElementById('experience');
+            var experienceError = document.getElementById('experience-error');
+            var experienceValue = experienceField.value.trim();
+            if (!/^\d+$/.test(experienceValue)) {
+                experienceError.textContent = "Please enter digits only.";
+                isValid = false;
+            } else if (experienceValue < 3) {
+                experienceError.textContent = "Experience must be at least 3 years.";
+                isValid = false;
+            } else {
+                experienceError.textContent = "";
+            }
+    
+            // Validate Department
+            var departmentField = document.getElementById('department');
+            var departmentError = document.getElementById('department-error');
+            var departmentValue = departmentField.value.trim();
+            if (!/^[a-zA-Z]{3,}$/.test(departmentValue)) {
+                departmentError.textContent = "Please enter alphabets only and minimum 3 characters.";
+                isValid = false;
+            } else {
+                departmentError.textContent = "";
+            }
+    
+            // Prevent form submission if any validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    
+        // Real-time validation for Contact Number
+        document.getElementById('number').addEventListener('input', function() {
+            var numberError = document.getElementById('number-error');
+            var numberValue = this.value.trim();
+            if (!/^\d*$/.test(numberValue)) {
+                numberError.textContent = "Please enter digits only.";
+            } else if (numberValue.length > 10) {
+                numberError.textContent = "Maximum 10 digits allowed.";
+            } else {
+                numberError.textContent = "";
+            }
+        });
+    
+        // Real-time validation for Age
+        document.getElementById('age').addEventListener('input', function() {
+            var ageError = document.getElementById('age-error');
+            var ageValue = this.value.trim();
+            if (!/^\d*$/.test(ageValue)) {
+                ageError.textContent = "Please enter digits only.";
+            } else if (ageValue !== '' && (ageValue < 18 || ageValue > 60)) {
+                ageError.textContent = "Please enter an age between 18 and 60.";
+            } else {
+                ageError.textContent = "";
+            }
+        });
+    
+        // Real-time validation for Experience
+        document.getElementById('experience').addEventListener('input', function() {
+            var experienceError = document.getElementById('experience-error');
+            var experienceValue = this.value.trim();
+            if (!/^\d*$/.test(experienceValue)) {
+                experienceError.textContent = "Please enter digits only.";
+            } else if (experienceValue !== '' && experienceValue < 3) {
+                experienceError.textContent = "Experience must be at least 3 years.";
+            } else {
+                experienceError.textContent = "";
+            }
+        });
+    
+        // Real-time validation for First Name
+        document.getElementById('first_name').addEventListener('input', function() {
+            var firstNameError = document.getElementById('first_name-error');
+            var firstNameValue = this.value.trim();
+            if (!/^[a-zA-Z]*$/.test(firstNameValue)) {
+                firstNameError.textContent = "Please enter alphabets only.";
+            } else if (firstNameValue.length < 3) {
+                firstNameError.textContent = "Minimum 3 characters required.";
+            } else {
+                firstNameError.textContent = "";
+            }
+        });
+    
+        // Real-time validation for Last Name
+        document.getElementById('last_name').addEventListener('input', function() {
+            var lastNameError = document.getElementById('last_name-error');
+            var lastNameValue = this.value.trim();
+            if (!/^[a-zA-Z]*$/.test(lastNameValue)) {
+                lastNameError.textContent = "Please enter alphabets only.";
+            } else if (lastNameValue.length < 3) {
+                lastNameError.textContent = "Minimum 3 characters required.";
+            } else {
+                lastNameError.textContent = "";
+            }
+        });
+    
+        // Real-time validation for Email
+        document.getElementById('email').addEventListener('input', function() {
+            var emailError = document.getElementById('email-error');
+            var emailValue = this.value.trim();
+            if (!/^[a-zA-Z0-9.@]*$/.test(emailValue)) {
+                emailError.textContent = "Please enter alphabets and digits only.";
+            } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(emailValue) && !/^[a-zA-Z0-9._%+-]+@email\.com$/.test(emailValue)) {
+                emailError.textContent = "Please enter a valid email address with @, ., gmail.com or email.com.";
+            } else {
+                emailError.textContent = ""; // Clear error message on valid input
+            }
+        });
+    
+        // Real-time validation for Department
+        document.getElementById('department').addEventListener('input', function() {
+            var departmentError = document.getElementById('department-error');
+            var departmentValue = this.value.trim();
+            if (!/^[a-zA-Z]*$/.test(departmentValue)) {
+                departmentError.textContent = "Please enter alphabets only.";
+            } else if (departmentValue.length < 3) {
+                departmentError.textContent = "Minimum 3 characters required.";
+            } else {
+                departmentError.textContent = "";
+            }
+        });
+    </script>
+</body>
+</html>

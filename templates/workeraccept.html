@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Accept</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #343a40;
+            margin: 0;
+            padding-top: 56px; /* Height of the navbar */
+        }
+        .sidebar {
+            background-color: rgba(0, 123, 255, 0.9);
+            padding: 15px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            border-right: 2px solid white;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .sidebar .navbar-brand {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            flex-direction: column; /* Arrange children in a column */
+        }
+        .sidebar .navbar-brand .welcome {
+            color: #fff;
+        }
+        .sidebar .navbar-brand .name {
+            color: orange;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .sidebar .nav-link {
+            color: white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .sidebar .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: white;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
+        .sidebar .nav-link:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+            color: #fff;
+        }
+        .sidebar .btn-danger {
+            width: 100%;
+        }
+        .content {
+            margin-left: 200px; /* Align with the sidebar */
+            padding: 20px;
+        }
+        .table-container {
+            margin: 20px auto; /* Center the table and add minimum distance */
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-group a {
+            margin-right: 5px; /* Adjust the spacing as needed */
+        }
+        .btn-group a:last-child {
+            margin-right: 0; /* Remove the margin from the last button */
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-container input {
+            margin-right: 5px; /* Adjust the spacing as needed */
+            /* Custom styles for the checkbox */
+            -webkit-appearance: none; /* Remove default styling */
+            appearance: none; /* Remove default styling */
+            background-color: white; /* Default background color */
+            border: 1px solid #ced4da; /* Border color */
+            width: 20px; /* Width of the checkbox */
+            height: 20px; /* Height of the checkbox */
+            cursor: pointer; /* Pointer cursor on hover */
+            position: relative; /* Positioning context for the checkmark */
+        }
+        .checkbox-container input:checked {
+            background-color: green; /* Green background when checked */
+            border: 1px solid green; /* Border color when checked */
+        }
+        .checkbox-container input:checked::before {
+            content: ''; /* Empty content for the checkmark */
+            display: block; /* Display the checkmark as a block element */
+            width: 6px; /* Width of the checkmark */
+            height: 12px; /* Height of the checkmark */
+            border: solid white; /* White checkmark */
+            border-width: 0 2px 2px 0; /* Thickness of the checkmark */
+            transform: rotate(45deg); /* Rotate to form the checkmark */
+            position: absolute; /* Positioning context relative to the checkbox */
+            top: 2px; /* Adjust positioning as needed */
+            left: 7px; /* Adjust positioning as needed */
+        }
+        .badge {
+            background-color: #ffc107;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 1199.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 80px; /* Compensate for the fixed navbar */
+            }
+            .sidebar {
+                width: 160px; /* Adjusted sidebar width */
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                overflow-y: visible;
+                background-color: rgba(0, 123, 255, 0.9);
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 20px; /* Compensate for the fixed navbar */
+            }
+            .table-container {
+                max-width: 100%; /* Adjusted to fit smaller screens */
+            }
+        }
+
+    </style>
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar collapse d-lg-block" id="sidebarMenu">
+        <div>
+            <a class="navbar-brand" href="#">
+                <span class="welcome">Welcome,</span>
+                <span class="name">{% if user.is_authenticated %}
+                {{ user.first_name }} {{ user.last_name }}
+                {% endif %}</span>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerhome' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workernotifications' %}">Notifications
+                        <span class="badge">{{ pending_requests_count }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerpassword' %}">Password Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerprofile' %}">Profile Updation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerreviews' %}">Worker Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workeraccept' %}">Accept and Reject</a>
+                </li>
+            </ul>
+        </div>
+        <a class="btn btn-danger" href="{% url 'logout1' %}">Logout</a>
+    </div>
+
+<!-- workeraccept.html -->
+<div class="content">
+    <div class="table-container">
+        <h1 class="text-center mb-5">User Requests</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                    <th>Department</th>
+                    <th>Service</th>
+                    <th>Profile Photo</th>
+                    <th>Action</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.user.first_name }}</td>
+                    <td>{{ request.user.last_name }}</td>
+                    <td>{{ request.usermember2.address }}</td>
+                    <td>{{ request.usermember2.date }}</td>
+                    <td>{{ request.usermember2.age }}</td>
+                    <td>{{ request.user.email }}</td>
+                    <td>{{ request.usermember2.number }}</td>
+                    <td>{{ request.department }}</td>
+                    <td>{{ request.service }}</td>
+                    <td>
+                        {% if request.usermember2.image %}
+                        <img src="{{ request.usermember2.image.url }}" alt="Profile Photo" style="max-width: 100px;">
+                        {% else %}
+                        No Photo
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if request.status == 'pending' %}
+                            <form method="POST" action="{% url 'confirm_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Confirm</button>
+                            </form>
+                            <form method="POST" action="{% url 'delete_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mt-2">Delete</button>
+                            </form>
+                        {% elif request.status == 'confirmed' %}
+                            <span class="text-success">Confirmed</span>
+                        {% elif request.status == 'deleted' %}
+                            <span class="text-danger">Deleted</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'toggle_completion' request.id %}">
+                            {% csrf_token %}
+                            <input type="checkbox" onChange="this.form.submit()" {% if request.completed %} checked {% endif %}>
+                            Completed
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="12" class="text-center">No History Of Workers.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>

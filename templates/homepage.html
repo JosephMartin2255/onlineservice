@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .navbar-brand span {
+            color: #ffc107;
+            font-size: xx-large;
+        }
+        .navbar-nav .nav-link {
+            font-size: 18px;
+            margin-right: 20px;
+            color: white;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffc107;
+        }
+        .form-inline {
+            flex-grow: 1;
+            margin-left: 0px;
+        }
+        .form-control {
+            border-color: white;
+            font-family: Arial, sans-serif;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .form-control::placeholder {
+            color: gray;
+        }
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .hero-section p {
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+        .services-section{
+            background-color: lightcyan;
+            margin-top: -48px;
+            padding-bottom: 50px;
+        }
+        .services-section h2{
+            padding-top: 50px;
+        }
+        .service-card {
+            border: none;
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .testimonial {
+            background-color: lightgoldenrodyellow;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .testimonial h2 {
+            margin-bottom: 40px;
+        }
+        .partners {
+            background-color: lightpink;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .partners img {
+            max-width: 150px;
+            margin: 20px;
+        }
+      
+        .footer {
+            background-color:#0984e3;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: large;
+        }
+        .footer span {
+            color: #ffc107;
+            font-size: x-large;
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .navbar-brand {
+                font-size: 20px;
+            }
+            .navbar-nav .nav-link {
+                font-size: 16px;
+            }
+            .hero-section h1 {
+                font-size: 40px;
+            }
+            .hero-section p {
+                font-size: 18px;
+            }
+            .service-card img {
+                height: 150px;
+            }
+            .testimonial h2 {
+                font-size: 24px;
+            }
+            .partners img {
+                max-width: 100px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 18px;
+            }
+            .navbar-nav .nav-link {
+                font-size: 14px;
+            }
+            .hero-section h1 {
+                font-size: 36px;
+            }
+            .hero-section p {
+                font-size: 16px;
+            }
+            .service-card img {
+                height: 120px;
+            }
+            .testimonial h2 {
+                font-size: 20px;
+            }
+            .partners img {
+                max-width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand" href="#"><span>O</span>SP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Departments" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" style="background-color: #ffc107; color: #ffffff;" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" style="color: black;" href="{% url 'homepage' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'loginpage1' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'workersignup' %}">Worker Signup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'usersignup' %}">User Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1>Welcome to Our Service Platform</h1>
+            <p>Your one-stop solution for all service needs</p>
+            <a href="{% url 'loginpage1' %}" class="btn btn-primary btn-lg" style="background-color: #ffc107; border-color: #ffc107;">Explore Services</a>
+        </div>
+    </div>
+
+    <div class="services-section">
+        <div class="container my-5" id="services">
+            <h2 class="text-center mb-4">Our Departments</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/8a/ad/ab/8aadabe22db683b98c994d8557962e42.jpg" class="card-img-top" alt="Service 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Plumber</h5>
+                            <p class="card-text">A plumber is a tradesperson who specializes in installing and maintaining systems used for potable water, sewage, and drainage in plumbing systems.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/44/55/45/445545d920e84f54458a14a529859e65.jpg" class="card-img-top" alt="Service 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Carpenter</h5>
+                            <p class="card-text">Carpentry is a skilled trade and craft in which the primary work performed is the cutting, shaping, and installation of building materials during construction.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/6b/bd/01/6bbd01bcceb7682e186c7d0c48cb10e3.jpg" class="card-img-top" alt="Service 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Electrician </h5>
+                            <p class="card-text">An electrician is a tradesman specializing in electrical wiring of buildings, transmission lines, stationary machines, and related equipment.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/68/8e/df/688edf717a5abf6a9158634c5be4d977.jpg" class="card-img-top" alt="Service 4">
+                        <div class="card-body">
+                            <h5 class="card-title">Welder</h5>
+                            <p class="card-text">Welding is a fabrication process that joins materials, usually metals or thermoplastics, by using high heat to melt the parts together and allowing them to cool.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/87/b6/f6/87b6f61ef25d417ca8d2a119d8c2a4d5.jpg" class="card-img-top" alt="Service 5">
+                        <div class="card-body">
+                            <h5 class="card-title">Painter</h5>
+                            <p class="card-text">Painters work in a variety of jobs to paint things. Buildings, cars, toys and a painter painted it. Painters use a variety of brushes, rollers.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card">
+                        <img src="https://i.pinimg.com/564x/99/50/6d/99506d8b5be75cb8b380e8845aa85b6d.jpg" class="card-img-top" alt="Service 6">
+                        <div class="card-body">
+                            <h5 class="card-title">Cleaning </h5>
+                            <p class="card-text">House cleaning prevents health issues, enhances comfort. It reduces stress and improves life quality. Regular cleaning keeps dust and allergens at bay.</p>
+                            <a href="{% url 'loginpage1' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="testimonial">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <p class="lead">"The service was excellent! The team was professional and efficient. Highly recommend!"</p>
+                        <footer class="blockquote-footer">John Doe</footer>
+                    </div>
+                    <div class="carousel-item">
+                        <p class="lead">"I am very satisfied with the quality of service provided. The staff was friendly and helpful."</p>
+                        <footer class="blockquote-footer">Jane Smith</footer>
+                    </div>
+                    <div class="carousel-item">
+                        <p class="lead">"Great experience from start to finish. The service was top-notch and exceeded my expectations."</p>
+                        <footer class="blockquote-footer">Emily Johnson</footer>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="partners">
+        <div class="container">
+            <h2>Our Partners</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-2 col-4">
+                    <img src="https://i.pinimg.com/564x/d0/75/89/d07589cb4469771ad6c31d0c9c9a3662.jpg" alt="Partner 1" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-4">
+                    <img src="https://i.pinimg.com/564x/1c/0a/09/1c0a0924c3b1094e5f4445a1799f0bb8.jpg" alt="Partner 2" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-4">
+                    <img src="https://i.pinimg.com/564x/a2/6d/71/a26d71e2bbece780b5f917e586f32489.jpg" alt="Partner 3" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-4">
+                    <img src="https://i.pinimg.com/564x/ef/10/cb/ef10cba2d24d1754e1fc0b0890064f0b.jpg" alt="Partner 4" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-4">
+                    <img src="https://i.pinimg.com/564x/5c/19/87/5c198743ff43e585497e30636bf80fc4.jpg" alt="Partner 5" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p style="font-size: 16px;">&copy; 2024 Copyright: <span>O</span>SP.com</p>
+            <p>Follow us on:
+                <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

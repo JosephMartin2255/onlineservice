@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page1</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+         body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+    }
+        .navbar {
+            background-color: #f8f9fa !important;
+            padding: 10px 0; /* Adjust the top and bottom padding as needed */
+            line-height: 1.5; /* Adjust line-height for better vertical alignment */
+            font-family: Arial,sans-serif;
+        }
+        .navbar-brand {
+            font-size: 24px; /* Navbar brand font size */
+            font-weight: bold; /* Navbar brand font weight */
+            color: white;
+            margin-left: 20px;
+        }
+        .navbar-brand span {
+            color: #ffc107;
+            font-size: xx-large;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 20px;
+            overflow: hidden;
+            justify-content: center;
+            height: 100vh;
+            background-color: #3b197d;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .header-container .text {
+            max-width: 50%;
+            padding: 0 20px;
+            margin-bottom: 20px;
+            color:white;
+        }
+        .header-container .text h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .header-container .text h1 span {
+            color: #ffc107;
+        }
+        .header-container .text p {
+            margin: 20px 0 0;
+            font-size: 1.2em;
+            max-width: 100%;
+        }
+        .header-container .image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .card-text{
+            font-family: "Times New Roman", serif; 
+        }
+        .card-img-top {
+            height: 200px; /* Adjust as needed */
+            width: 100%; /* Ensures image width adjusts to the card width */
+            object-fit: cover; /* Ensures the image covers the entire card without stretching */
+        }
+        .service-section {
+            padding: 40px 0px;
+            background-color: #f8f9fa;
+            overflow: hidden;
+            background-color: #3b197d;
+            border-radius: 8px;
+    
+            
+        }
+
+        .service-text-box {
+            text-align: center;
+            flex: 2;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .service-text-box h2 {
+            font-size: 2em;
+            margin-bottom: 20px; /* Increase space below heading */
+            margin-top: 100px; 
+            color: white;
+        }
+        .service-text-box h2 span{
+            color: #ffc107
+        }
+    
+
+        .service-text-box p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .service-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        #logos {
+    padding: 20px;
+    padding-bottom: 100px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.heading {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #3b197d;
+    padding-top: 50px;
+}
+
+.logos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3b197d;
+    padding: 20px; /* Adjust padding as needed */
+    border-radius: 10px;
+    overflow-x: auto; /* Enable horizontal scrolling for small screens */
+    white-space: nowrap; /* Prevent logos from wrapping */
+}
+
+.logo {
+    width: auto; /* Let the width adjust dynamically */
+    height: 150px; /* Set the height of logos */
+    margin: 0 30px; /* Adjust spacing between logos */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+
+@media only screen and (max-width: 768px) {
+    .logos-container {
+        flex-wrap: nowrap; /* Allow logos to wrap to a new line */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+
+    .logo {
+        height: 120px; /* Reduce height for smaller screens */
+        margin: 0 10px; /* Adjust spacing between logos */
+    }
+
+    .heading {
+        font-size: 1.5rem; /* Adjust heading font size for smaller screens */
+    }
+}
+
+
+       
+    
+
+.footer {
+    background-color: #3b197d;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+}
+
+.footer span {
+    color: #ffc107;
+    font-size: x-large;
+}
+
+        
+        
+        .department-section {
+            padding: 50px 20px;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+        .department-section .department-row {
+            margin-bottom: 30px;
+        }
+        .department-section h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .department-section p {
+            color: #6c757d;
+        }
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 30px 10px;
+            }
+            .header-container .text {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            .service-section .card {
+                margin-bottom: 20px;
+            }
+            .logos-container {
+                padding: 30px 0;
+            }
+            .department-section {
+                padding: 30px 10px;
+            }
+            .department-section .department-row {
+                margin-bottom: 20px;
+            }
+            .footer {
+                padding: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"><span>O</span>SP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'userhome' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"  style="color: black;" href="{% url 'userabout' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'useraccount' %}">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'userrequest' %}">Department</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'logout1' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Header Section -->
+    <div class="header-container">
+        <div class="text">
+            <h1>Take a step into the<br><span>Online Service Provider</span></h1>
+            <p>An online service providing platform that seamlessly connects<br> customers with providers. Selling your services has never been easier.</p>
+        </div>
+        <div class="image">
+            <img src="https://i.pinimg.com/564x/47/78/df/4778df1d028851da593d47070588ea6c.jpg" alt="Online Service Provider">
+        </div>
+    </div>
+    
+    <!-- Services Section -->
+<section class="service-section bg-light py-5"> <!-- Added bg-light class for background color and py-5 for padding -->
+    <div class="container">
+        <h2 class="text-center mb-4" style="font-family: Arial, sans-serif; font-size: 2.5rem; color: #3b197d;">All Departments</h2> <!-- Added styles for the heading -->
+        <div class="row">
+            <div class="row">
+                <!-- Card 1 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/8a/ad/ab/8aadabe22db683b98c994d8557962e42.jpg" alt="Plumber">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Plumber <span class="badge badge-secondary">({{ department_counts.Plumber }})</span></h5>
+                            <p class="card-text">A plumber is a tradesperson who specializes in installing and maintaining systems used for potable water, sewage, and drainage in plumbing systems.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/44/55/45/445545d920e84f54458a14a529859e65.jpg" alt="Carpenter">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Carpenter <span class="badge badge-secondary">({{ department_counts.Carpenter }})</span></h5>
+                            <p class="card-text">Carpentry is a skilled trade and craft in which the primary work performed is the cutting, shaping, and installation of building materials during construction.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/6b/bd/01/6bbd01bcceb7682e186c7d0c48cb10e3.jpg" alt="Electrician">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Electrician <span class="badge badge-secondary">({{ department_counts.Electrician }})</span></h5>
+                            <p class="card-text">An electrician is a tradesman specializing in electrical wiring of buildings, transmission lines, stationary machines, and related equipment.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Card 4 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/68/8e/df/688edf717a5abf6a9158634c5be4d977.jpg" alt="Welder">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Welder <span class="badge badge-secondary">({{ department_counts.Welder }})</span></h5>
+                            <p class="card-text">Welding is a fabrication process that joins materials, usually metals or thermoplastics, by using high heat to melt the parts together and allowing them to cool, causing fusion.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/87/b6/f6/87b6f61ef25d417ca8d2a119d8c2a4d5.jpg" alt="Painter">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Painter <span class="badge badge-secondary">({{ department_counts.Painter }})</span></h5>
+                            <p class="card-text">Painters work in a variety of jobs to paint things. Buildings, cars, toys and a painter painted it. Painters use a variety of brushes, rollers.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="https://i.pinimg.com/564x/99/50/6d/99506d8b5be75cb8b380e8845aa85b6d.jpg" alt="Cleaning">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Cleaning <span class="badge badge-secondary">({{ department_counts.Cleaning }})</span></h5>
+                            <p class="card-text">House cleaning prevents health issues, enhances comfort. It reduces stress and improves life quality. Regular cleaning keeps dust and allergens at bay.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary" style="width: 100%; background-color: #3b197d;">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+   <!-- Services Section -->
+<section class="service-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text Content -->
+            <div class="col-md-6">
+                <div class="service-text-box">
+                    <h2 style="text-align: center;">Avail services <span>whenever</span> you want</h2>
+                    <p style="text-align: center;">Choosing among a vast range of services and service providers is no longer a tedious task.</p>
+                    <a href="" class="service-button" style="text-decoration: none;">Have Your Service</a>
+                </div>
+            </div>
+            <!-- Image -->
+            <div class="col-md-6 service-img">
+                <img src="https://static6.depositphotos.com/1000144/599/i/450/depositphotos_5993221-stock-photo-set-of-working-tools.jpg" alt="Services" style="max-width: 100%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+      <section id="logos">
+        <h1 class="heading">Our Partners</h1>
+        <div class="logos-container">
+            <img src="https://images-workbench.99static.com/1cyx0kaUUC-Zjm0XgVIkbW327g4=/99designs-contests-attachments/123/123537/attachment_123537059" alt="Logo 1" class="logo">
+            <img src="https://images-workbench.99static.com/a1sWmMhH9k1JBJ_gPUHWEirJBrY=/99designs-contests-attachments/139/139949/attachment_139949063" alt="Logo 2" class="logo">
+            <img src="https://images-workbench.99static.com/yxAi74KY2F2XNpfwG3nYVT1yliY=/99designs-contests-attachments/124/124877/attachment_124877133" alt="Logo 3" class="logo">
+            <img src="https://images-workbench.99static.com/FcqCh1Gm874jRt3VyPdD-svms5c=/99designs-contests-attachments/135/135334/attachment_135334464" alt="Logo 4" class="logo">
+            <img src="https://i.pinimg.com/564x/97/f7/56/97f7564fe91c4263db08a3b2f3acb3c7.jpg" alt="Logo 5" class="logo">
+            <img src="https://i.pinimg.com/564x/a3/89/da/a389dafd9bf27761b5042c16185db5dd.jpg" alt="Logo 6" class="logo">
+            <img src="https://i.pinimg.com/564x/f8/65/7a/f8657aa6430eb23fcaf87dd2a9b05221.jpg" alt="Logo 7" class="logo">
+        </div>
+    </section>
+
+    <div class="footer">
+        <footer>
+            <p style="font-size: 16px;">&copy; 2024 Copyright: <span>O</span>SP.com</p>
+        </footer>
+    </div>
+    
+    
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-image: url('https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?cs=srgb&dl=pexels-pixabay-531880.jpg&fm=jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Arial', sans-serif;
+            color: #343a40;
+            padding-top: 70px;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: #ffffff;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .navbar-brand span {
+            color: #ffc107;
+            font-size: xx-large;
+        }
+        .navbar-nav .nav-link {
+            font-size: 18px;
+            margin-right: 20px;
+            color: white;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffc107;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .success-message {
+            font-size: 1.2em;
+            color: green;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 1.1em;
+            margin-top: 10px;
+            display: block;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: none; /* Disable resizing */
+            height: 120px; /* Set initial height */
+        }
+        .error {
+            color: red;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 100px;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            input[type="text"],
+            input[type="number"],
+            input[type="email"],
+            input[type="file"],
+            textarea {
+                font-size: 16px;
+            }
+            button[type="submit"] {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+        <a class="navbar-brand" href="#"><span>O</span>SP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'homepage' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'loginpage1' %}">Login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'workersignup' %}">Worker Signup</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'usersignup' %}">User Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'userreg1' %}">
+            {% csrf_token %}
+            <h1>User Signup</h1>
+            {% if success_message %}
+            <div class="success-message">{{ success_message }}</div>
+            {% endif %}
+            <!-- First Name -->
+            <div>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="fname" value="{{ data.fname|default:'' }}">
+                {% if errors.fnameError %}
+                    <div id="fname-error" style="color: red;">{{ errors.fnameError }}</div>
+                {% endif %}
+            </div>
+            <!-- Last Name -->
+            <div>
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname" value="{{ data.lname|default:'' }}">
+                {% if errors.lnameError %}
+                    <div id="lname-error" style="color: red;">{{ errors.lnameError }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="uname">Username:</label>
+                <input type="text" id="uname" name="uname" value="{{ data.uname|default:'' }}">
+                {% if errors.unameError %}
+                    <div id="uname-error" style="color: red;">{{ errors.unameError }}</div>
+                {% endif %}
+            </div>
+            <!-- Age -->
+            <div>
+                <label for="age">Age:</label>
+                <input type="text" id="age" name="age" value="{{ data.age|default:'' }}">
+                {% if errors.ageError %}
+                    <div id="age-error" style="color: red;">{{ errors.ageError }}</div>
+                {% endif %}
+            </div>
+            <!-- Email -->
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" value="{{ data.email|default:'' }}">
+                {% if errors.emailError %}
+                    <div id="email-error" style="color: red;">{{ errors.emailError }}</div>
+                {% endif %}
+            </div>
+            <!-- Address -->
+            <div>
+                <label for="address">Address:</label>
+                <textarea id="address" name="address">{{ data.address|default:'' }}</textarea>
+                {% if errors.addressError %}
+                    <div id="address-error" style="color: red;">{{ errors.addressError }}</div>
+                {% endif %}
+            </div>
+            <!-- Date -->
+            <div>
+                <label for="date">Date:</label>
+                <div>
+                    <input type="date" id="date" name="date" value="{{ data.date|default:'' }}">
+                    {% if errors.dateError %}
+                        <div id="date-error" style="color: red;">{{ errors.dateError }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Contact -->
+            <div>
+                <label for="number">Contact:</label>
+                <input type="text" id="number" name="number" value="{{ data.number|default:'' }}">
+                {% if errors.numberError %}
+                    <div id="number-error" style="color: red;">{{ errors.numberError }}</div>
+                {% endif %}
+            </div>
+            <label for="image">Profile Picture:</label>
+            <input type="file" id="image" name="image">
+            <div class="error" id="photoError">{{ errors.photoError }}</div>
+            <input type="hidden" id="text" name="text" value="2">
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to check if input field is empty
+            function checkInputEmpty(fieldId, errorId) {
+                var inputText = $(fieldId).val().trim();
+                if (inputText.length > 0) {
+                    $(errorId).hide();
+                } else {
+                    $(errorId).show();
+                }
+            }
+
+            // Event listeners for each input field
+            $('#fname').on('input', function() {
+                checkInputEmpty('#fname', '#fname-error');
+            });
+
+            $('#lname').on('input', function() {
+                checkInputEmpty('#lname', '#lname-error');
+            });
+
+            $('#age').on('input', function() {
+                checkInputEmpty('#age', '#age-error');
+            });
+
+            $('#email').on('input', function() {
+                checkInputEmpty('#email', '#email-error');
+            });
+            $('#address').on('input', function() {
+                checkInputEmpty('#address', '#address-error');
+            });
+            $('#date').on('input', function() {
+                checkInputEmpty('#date', '#date-error');
+            });
+
+            $('#number').on('input', function() {
+                checkInputEmpty('#number', '#number-error');
+            });
+        });
+    </script>
+</body>
+</html>

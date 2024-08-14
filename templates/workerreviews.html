@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Reviews</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #343a40;
+            margin: 0;
+            padding-top: 56px; /* Height of the navbar */
+        }
+        .sidebar {
+            background-color: rgba(0, 123, 255, 0.9);
+            padding: 15px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            border-right: 2px solid white;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .sidebar .navbar-brand {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            flex-direction: column; /* Arrange children in a column */
+        }
+        .sidebar .navbar-brand .welcome {
+            color: #fff;
+        }
+        .sidebar .navbar-brand .name {
+            color: orange;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .sidebar .nav-link {
+            color: white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .sidebar .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: white;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
+        .sidebar .nav-link:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+            color: #fff;
+        }
+        .sidebar .btn-danger {
+            width: 100%;
+        }
+        .content {
+            margin-left: 200px; /* Align with the sidebar */
+            padding: 20px;
+        }
+        .table-container {
+            margin: 20px auto; /* Center the table and add minimum distance */
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .badge {
+            background-color: #ffc107;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 1199.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 80px; /* Compensate for the fixed navbar */
+            }
+            .sidebar {
+                width: 160px; /* Adjusted sidebar width */
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                overflow-y: visible;
+                background-color: rgba(0, 123, 255, 0.9);
+            }
+            .content {
+                margin-left: 0;
+                padding-top: 20px; /* Compensate for the fixed navbar */
+            }
+            .table-container {
+                max-width: 100%; /* Adjusted to fit smaller screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar collapse d-lg-block" id="sidebarMenu">
+        <div>
+            <a class="navbar-brand" href="#">
+                <span class="welcome">Welcome,</span>
+                <span class="name">{% if user.is_authenticated %}
+                {{ user.first_name }} {{ user.last_name }}
+                {% endif %}</span>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerhome' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workernotifications' %}">Notifications
+                        <span class="badge">{{ pending_requests_count }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerpassword' %}">Password Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerprofile' %}">Profile Updation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workerreviews' %}">Worker Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workeraccept' %}">Accept and Reject</a>
+                </li>
+            </ul>
+        </div>
+        <a class="btn btn-danger" href="{% url 'logout1' %}">Logout</a>
+    </div>
+
+
+    <div class="content">
+        <div class="table-container">
+            <h1 class="text-center mb-5">Reviews and Ratings</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Review of Work</th>
+                        <th>Ratings</th>
+                        <th>Suggestions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.username }}</td>
+                        <td>{{ review.review_text }}</td>
+                        <td>{{ review.ratings }}</td>
+                        <td>{{ review.suggestions }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No Reviews Of Users.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

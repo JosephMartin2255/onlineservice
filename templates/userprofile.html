@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("https://media.istockphoto.com/id/587882134/photo/art-welcome-back-to-school-banner-school-supplies-tumblr.webp?b=1&s=170667a&w=0&k=20&c=0Wn4-TGBpZHsUtMbDuj411VgekDJWk_FYhkJ_Vln6YI=");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .navbar-brand {
+            font-size: 24px; /* Navbar brand font size */
+            font-weight: bold; /* Navbar brand font weight */
+            color: white;
+        }
+        .navbar-brand span {
+            color: #ffc107;
+            font-size: xx-large;
+        }
+        .navbar {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-nav {
+            margin-left: auto;
+        }
+        .nav-item .nav-link {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+        .navbar-toggler {
+            border-color: rgba(0,0,0,.1);
+        }
+        .content-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 100px; /* Ensure content starts below the navbar */
+            padding-bottom: 50px; /* Ensure there's space above the footer */
+        }
+        .content {
+            max-width: 600px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px; /* Ensure some margin around the content */
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .form-container h2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2em;
+            color: #3b197d;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 25px;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #3b197d;
+        }
+        .form-group input,
+        .form-group .form-control-file {
+            font-size: 1em;
+            padding: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .btn-primary {
+            background-color: #3b197d;
+            border: none;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .form-control-file {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-control-file:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+        }
+        .footer {
+            background-color: #3b197d;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: large;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer span {
+            color: #ffc107;
+            font-size: x-large;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("profile-form");
+            const firstNameInput = document.getElementById("first_name");
+            const firstNameError = document.getElementById("first_name_error");
+            const lastNameInput = document.getElementById("last_name");
+            const lastNameError = document.getElementById("last_name_error");
+            const usernameInput = document.getElementById("username");
+            const usernameError = document.getElementById("username_error");
+            const ageInput = document.getElementById("age");
+            const ageError = document.getElementById("age_error");
+            const emailInput = document.getElementById("email");
+            const emailError = document.getElementById("email_error");
+            const numberInput = document.getElementById("number");
+            const numberError = document.getElementById("number_error");
+            const imageInput = document.getElementById("image");
+            const imageError = document.getElementById("image_error");
+
+            // Reset form fields
+            form.reset();
+
+            form.addEventListener("submit", function(event) {
+                let isValid = true;
+
+                // Validate first name
+                const firstNameValue = firstNameInput.value.trim();
+                if (!/^[A-Za-z]{3,}$/.test(firstNameValue)) {
+                    firstNameError.textContent = "Includes only alphabets and be at least 3 characters long.";
+                    isValid = false;
+                } else {
+                    firstNameError.textContent = "";
+                }
+
+                // Validate last name
+                const lastNameValue = lastNameInput.value.trim();
+                if (!/^[A-Za-z]{3,}$/.test(lastNameValue)) {
+                    lastNameError.textContent = "Includes only alphabets and be at least 3 characters long.";
+                    isValid = false;
+                } else {
+                    lastNameError.textContent = "";
+                }
+
+                // Validate username
+                const usernameValue = usernameInput.value.trim();
+                const usernameErrors = [];
+
+                if (usernameValue.length < 6 || usernameValue.length > 15) {
+                    usernameErrors.push("6-15 characters");
+                }
+                if (!/[a-z]/.test(usernameValue)) {
+                    usernameErrors.push("1 lowercase letter");
+                }
+                if (!/[A-Z]/.test(usernameValue)) {
+                    usernameErrors.push("1 uppercase letter");
+                }
+                if (!/\d/.test(usernameValue)) {
+                    usernameErrors.push("1 digit");
+                }
+                if (!/[@$!%*?&]/.test(usernameValue)) {
+                    usernameErrors.push("1 special character");
+                }
+
+                if (usernameErrors.length > 0) {
+                    usernameError.innerHTML = `Includes at least ${usernameErrors.join(', ')}`;
+                    isValid = false;
+                } else {
+                    usernameError.textContent = "";
+                }
+
+                // Validate age
+                const ageValue = ageInput.value.trim();
+                if (!/^\d+$/.test(ageValue) || parseInt(ageValue, 10) < 18) {
+                    ageError.textContent = "Includes only digits and at least 18 years old.";
+                    isValid = false;
+                } else {
+                    ageError.textContent = "";
+                }
+
+                // Validate email
+                const emailValue = emailInput.value.trim();
+                if (!/^[\w.-]+@(gmail\.|email\.)com$/.test(emailValue)) {
+                    emailError.textContent = "Invalid email format, must be '@gmail.com' or '@email.com'.";
+                    isValid = false;
+                } else {
+                    emailError.textContent = "";
+                }
+
+                // Validate contact number
+                const numberValue = numberInput.value.trim();
+                if (!/^\d{10}$/.test(numberValue)) {
+                    numberError.textContent = "Must be exactly 10 digits.";
+                    isValid = false;
+                } else {
+                    numberError.textContent = "";
+                }
+
+                // Validate profile image
+                const imageFile = imageInput.files[0];
+                if (imageFile) {
+                    const allowedExtensions = /\.(jpg|jpeg|png)$/i;
+                    if (!allowedExtensions.test(imageFile.name)) {
+                        imageError.textContent = "Invalid file type, only JPEG, JPG, or PNG files are allowed.";
+                        isValid = false;
+                    } else {
+                        imageError.textContent = "";
+                    }
+                } else {
+                    imageError.textContent = "Please select an image.";
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                } else {
+                    // If all validations pass, you can submit the form or perform other actions here
+                    // For example, if using Ajax to submit form data with FormData:
+                    // const formData = new FormData(form);
+                    // fetch('/your-save-image-endpoint', {
+                    //     method: 'POST',
+                    //     body: formData
+                    // }).then(response => {
+                    //     // Handle response
+                    // }).catch(error => {
+                    //     // Handle error
+                    // });
+                }
+            });
+
+            // Clear error messages on input focus
+            const inputs = [firstNameInput, lastNameInput, usernameInput, ageInput, emailInput, numberInput, imageInput];
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    const errorElement = document.getElementById(`${input.id}_error`);
+                    if (errorElement) {
+                        errorElement.textContent = '';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"><span>O</span>SP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'userhome' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'userabout' %}">About</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'useraccount' %}">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: black;" href="{% url 'userrequest' %}">Department</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'logout1' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="content-container">
+        <div class="content">
+            <div class="form-container">
+                <h2>Update Profile</h2>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form id="profile-form" method="post" enctype="multipart/form-data" action="{% url 'userprofile1' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ form_data.first_name }}" required>
+                        <div id="first_name_error" class="error-message"></div>
+                        {% if error_messages.first_name %}
+                            <div class="error-message">{{ error_messages.first_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ form_data.last_name }}" required>
+                        <div id="last_name_error" class="error-message"></div>
+                        {% if error_messages.last_name %}
+                            <div class="error-message">{{ error_messages.last_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ form_data.username }}" required>
+                        <div id="username_error" class="error-message"></div>
+                        {% if error_messages.username %}
+                            <div class="error-message">{{ error_messages.username }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ form_data.email }}" required>
+                        <div id="email_error" class="error-message"></div>
+                        {% if error_messages.email %}
+                            <div class="error-message">{{ error_messages.email }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" class="form-control" id="age" name="age" value="{{ form_data.age }}" required>
+                        <div id="age_error" class="error-message"></div>
+                        {% if error_messages.age %}
+                            <div class="error-message">{{ error_messages.age }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="number">Contact Number</label>
+                        <input type="text" class="form-control" id="number" name="number" value="{{ form_data.number }}" required>
+                        <div id="number_error" class="error-message"></div>
+                        {% if error_messages.number %}
+                            <div class="error-message">{{ error_messages.number }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image">Profile Image</label>
+                        <input type="file" class="form-control-file" id="image" name="image" accept=".jpg, .jpeg, .png" required>
+                        <div id="image_error" class="error-message"></div>
+                        {% if error_messages.image %}
+                            <div class="error-message">{{ error_messages.image }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Other form fields with similar error message handling -->
+                  
+                    
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <footer>
+            <p style="font-size: 16px;">&copy; 2024 Copyright: <span>O</span>SP.com</p>
+        </footer>
+    </div>
+</body>
+</html>

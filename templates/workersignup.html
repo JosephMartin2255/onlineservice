@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxOTc3M3wwfDF8c2VhcmNofDN8fGJhY2tncm91bmR8ZW58MHx8fHwxNjQyMjM5MDk4&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #343a40;
+            padding-top: 70px; /* Adjust padding to account for fixed navbar */
+            padding-bottom: 20px; /* Add padding to bottom */
+        }
+        .navbar {
+            background-color: #007bff; /* Navbar color */
+            color: #ffffff; /* Navbar text color */
+            position: fixed;
+            width: 100%;
+            z-index: 1000; /* Ensure navbar stays on top of other content */
+        }
+        .navbar-brand {
+            font-size: 24px; /* Navbar brand font size */
+            font-weight: bold; /* Navbar brand font weight */
+            color: white;
+        }
+        .navbar-brand span {
+            color: #ffc107;
+            font-size: xx-large;
+        }
+        .navbar-toggler {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .navbar-nav .nav-link {
+            font-size: 18px; /* Navbar link font size */
+            margin-right: 20px; /* Navbar link margin */
+            color: white;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffc107; /* Navbar link hover color */
+        }
+        .error-message {
+            color: red;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin-top: 80px; /* Adjust margin-top for spacing from navbar */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px; /* Add margin-bottom */
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            color: red;
+        }
+        .error-message {
+            color: red;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                margin-top: 10px; /* Adjust margin-top for navbar links */
+            }
+            .container {
+                margin-top: 20px; /* Adjust margin-top for spacing from navbar */
+                padding: 15px; /* Adjust padding for smaller screens */
+            }
+            .navbar-toggler {
+                top: -2px; /* Adjust top position of navbar toggler */
+                width: 55px;
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            var departmentSelect = document.getElementById('id_department');
+            var otherDepartmentField = document.getElementById('id_other_department');
+
+            function toggleOtherDepartmentField() {
+                if (departmentSelect.value === 'other') {
+                    otherDepartmentField.style.display = 'block';
+                    otherDepartmentField.parentElement.style.display = 'block';
+                } else {
+                    otherDepartmentField.style.display = 'none';
+                    otherDepartmentField.parentElement.style.display = 'none';
+                }
+            }
+
+            departmentSelect.addEventListener('change', toggleOtherDepartmentField);
+            toggleOtherDepartmentField();
+
+            $('input, select').on('input change', function() {
+                $(this).siblings('.error-message').text(''); // Clear error message on input/change
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+        <a class="navbar-brand" href="#"><span>O</span>SP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'homepage' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'loginpage1' %}">Login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'workersignup' %}">Worker Signup</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'usersignup' %}">User Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form action="{% url 'workersignup' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Worker Registration</h1>
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</body>
+</html>

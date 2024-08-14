@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Workers</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #343a40;
+            margin: 0;
+            padding-top: 56px; /* Height of the navbar */
+        }
+        .sidebar {
+            background-color: rgba(0, 123, 255, 0.9);
+            padding: 15px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            border-right: 2px solid white;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar .navbar-brand {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar .navbar-brand .welcome {
+            margin-right: 10px;
+            color: #fff;
+        }
+        .sidebar .navbar-brand span {
+            color: orange;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .sidebar .navbar-brand .small {
+            color: black;
+            font-size: 1.1em;
+        }
+        .sidebar .nav-link {
+            color: white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .sidebar .nav-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: white;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
+        .sidebar .nav-link:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+            color: #fff;
+        }
+        .sidebar .btn-danger {
+            width: 100%;
+        }
+        .content {
+            margin-left: 200px; /* Align with the sidebar */
+            padding: 20px;
+        }
+        .table-container {
+            max-width: 100%; /* Adjust as needed */
+            margin: 20px auto; /* Center the table and add minimum distance */
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .badge {
+            background-color: #ffc107;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .status-approved {
+            color: green;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+        .status-disapproved {
+            color: red;
+            font-weight: bold;
+        }
+        @media (max-width: 991.98px) { /* Adjust as per your needs */
+            .content {
+                margin-left: 0; /* Collapse margin on smaller screens */
+            }
+            body {
+                padding-top: 0; /* Remove padding on top for smaller screens */
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 2px solid white;
+                padding-bottom: 15px;
+                display: none; /* Initially hide on smaller screens */
+            }
+            .sidebar.show {
+                display: flex; /* Show when .show class is added */
+            }
+            .table-container {
+                overflow-x: auto; /* Allow horizontal scrolling on small screens */
+            }
+        }
+        @media (max-width: 576px) {
+            .sidebar {
+                padding: 10px;
+            }
+            .sidebar .navbar-brand {
+                font-size: 1em;
+            }
+            .sidebar .navbar-brand .welcome {
+                margin-right: 5px;
+            }
+            .sidebar .navbar-brand span {
+                font-size: 1.2em;
+            }
+            .sidebar .navbar-brand .small {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar collapse d-lg-block" id="sidebarMenu">
+        <div>
+            <a class="navbar-brand" href="#">
+                <span class="welcome">Welcome</span>
+                <span>O</span><span class="small">SP</span>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'adminhome' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'newdepartment' %}">Add Department</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'notifications' %}">
+                        Notifications
+                        {% if total_pending_count > 0 %}
+                        <span class="badge">{{ total_pending_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'viewworkers' %}">View Workers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'viewusers' %}">View Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'approvedworkers' %}">Worker History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'approvedisapprove' %}">Approve and Disapprove</a>
+                </li>
+            </ul>
+        </div>
+            <a class="btn btn-danger" href="{% url 'logout1' %}">Logout</a>
+    </div>
+
+
+    <div class="content">
+        <div class="table-container">
+            <h1 class="text-center mb-5">Worker Details</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Experience</th>
+                        <th>Department</th>
+                        <th>Profile Photo</th>
+                        <th>Approval Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for worker in workers %}
+                    <tr>
+                        <td>{{ worker.user.first_name }}</td>
+                        <td>{{ worker.user.last_name }}</td>
+                        <td>{{ worker.age }}</td>
+                        <td>{{ worker.user.email }}</td> 
+                        <td>{{ worker.number }}</td>
+                        <td>{{ worker.experience }}</td>
+                        <td>{{ worker.department }}</td>
+                        <td>
+                            {% if worker.image %}
+                            <img src="{{ worker.image.url }}" alt="Profile Photo" style="max-width: 100px;">
+                            {% else %}
+                            No Image
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if worker.is_approved %}
+                            <span class="status-approved">Approved</span>
+                            {% elif worker.status == 'disapproved' %}
+                            <span class="status-disapproved">Disapproved</span>
+                            {% else %}
+                            <span class="status-pending">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_worker' worker.user.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No Workers Available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</body>
+</html>
